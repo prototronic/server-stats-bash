@@ -96,15 +96,15 @@ printf "%-${LABEL_WIDTH}s %s\n%-${LABEL_WIDTH}s %s %6.1f%%\n" "Free" "$(kb2human
 echo
 
 # Snapshot of ps aux for further sorting
-ps_snapshot=$(ps -eo pid,%cpu,%mem,comm --no-headers)
+ps_snapshot=$(ps -eo pid,%cpu,%mem,args --no-headers)
 
 # Top 5 process by CPU usage
 echo "--- TOP 5 process by CPU usage ---"
 echo
 ps_by_cpu=$(echo "$ps_snapshot" | sort -k2 -nr | head -5)
-printf "%-${LABEL_WIDTH}s %8s %5s %5s %s\n" "" "PID" "CPU" "MEM" "NAME"
-while read -r pid cpu mem comm; do
-    printf "%-${LABEL_WIDTH}s %8s %5s %5s %s\n" "" "$pid" "$cpu" "$mem" "$comm"
+printf "%-${LABEL_WIDTH}s %8s %5s %5s %-20.30s\n" "" "PID" "CPU" "MEM" "NAME"
+while read -r pid cpu mem args; do
+    printf "%-${LABEL_WIDTH}s %8s %5s %5s %-20.30s\n" "" "$pid" "$cpu" "$mem" "$args"
 done <<< $ps_by_cpu 
 echo
 
@@ -112,8 +112,8 @@ echo
 echo "--- TOP 5 process by Memory usage ---"
 echo
 ps_by_mem=$(echo "$ps_snapshot" | sort -k3 -nr | head -5)
-printf "%-${LABEL_WIDTH}s %8s %5s %5s %s\n" "" "PID" "CPU" "MEM" "NAME"
-while read -r pid cpu mem comm; do
-    printf "%-${LABEL_WIDTH}s %8s %5s %5s %s\n" "" "$pid" "$cpu" "$mem" "$comm"
+printf "%-${LABEL_WIDTH}s %8s %5s %5s %-20.30s\n" "" "PID" "CPU" "MEM" "NAME"
+while read -r pid cpu mem args; do
+    printf "%-${LABEL_WIDTH}s %8s %5s %5s %-20.30s\n" "" "$pid" "$cpu" "$mem" "$args"
 done <<< $ps_by_mem 
 echo
